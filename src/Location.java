@@ -41,4 +41,22 @@ public class Location {
             System.out.println("Location does not host any event");
         }
     }
+
+    public void printEventCheapestTicket() {
+        if (hasTicketsAvailable()) {
+            event.displayEventDetails();
+        }
+        else {
+            System.out.println("No event tickets at this location.");
+        }
+    }
+
+    public int getxCoordinate() {
+        return xCoordinate;
+    }
+
+    public int getyCoordinate() {
+        return yCoordinate;
+    }
+
 }

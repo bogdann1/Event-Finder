@@ -45,7 +45,7 @@ public class Event {
     }
 
     public void displayEventDetails() {
-        System.out.println("Event " + eventName + " - $" + getCheapestTicketPrice());
+        System.out.print("Event " + eventName + " - $" + getCheapestTicketPrice());
     }
 
     public void displayEventDetailsWithAllTickets() {
