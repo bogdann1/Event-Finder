@@ -24,4 +24,7 @@ public class Ticket {
         return price;
     }
 
+    public void displayPrice() {
+        System.out.print("$" + price + " ");
+    }
 }

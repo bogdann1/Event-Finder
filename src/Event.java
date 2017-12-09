@@ -47,4 +47,18 @@ public class Event {
     public void displayEventDetails() {
         System.out.println("Event " + eventName + " - $" + getCheapestTicketPrice());
     }
+
+    public void displayEventDetailsWithAllTickets() {
+        if (eventHasTickets()) {
+            System.out.print("Event " + eventName + " - ");
+            for (Ticket ticket : tickets) {
+                ticket.displayPrice();
+            }
+            System.out.println();
+        }
+        else
+        {
+            System.out.println("Event " + eventName + " - No tickets available");
+        }
+    }
 }
