@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -13,8 +14,8 @@ public class Map {
     static final int X_COORDINATE_LOWER_BOUND = X_COORDINATE_UPPER_BOUND * (-1);
     static final int Y_COORDINATE_LOWER_BOUND = Y_COORDINATE_UPPER_BOUND * (-1);
     public static final int MINIMUM_NUMBER_OF_TICKETS_IF_AVAILABLE = 1;
-    public static final int MAXIMUM_NUMBER_OF_TICKETS_FOR_EVENT = 4;
-    public static final double MINIMUM_TICKET_PRICE = 0.05;
+    public static final int MAXIMUM_NUMBER_OF_TICKETS_FOR_EVENT = 50;
+    public static final double MINIMUM_TICKET_PRICE = 10;
     public static final int MAXIMUM_TICKET_PRICE = 100;
     public static final int NUMBER_OF_X_AXIS_POINTS = Math.abs(X_COORDINATE_LOWER_BOUND) + Math.abs(X_COORDINATE_UPPER_BOUND) + 1;
     public static final int NUMBER_OF_Y_AXIS_POINTS = Math.abs(Y_COORDINATE_LOWER_BOUND) + Math.abs(Y_COORDINATE_UPPER_BOUND) + 1;
@@ -68,7 +69,7 @@ public class Map {
         int numberOfTickets = generateRandomNumberOfTickets();
         while (numberOfTickets >= 1) {
             float randomPrice = (float) (MINIMUM_TICKET_PRICE + r.nextFloat()*(MAXIMUM_TICKET_PRICE - MINIMUM_TICKET_PRICE));
-            BigDecimal ticketPrice = new BigDecimal(randomPrice).setScale(TICKET_PRICE_NUMBER_OF_DECIMALS,BigDecimal.ROUND_HALF_UP);
+            BigDecimal ticketPrice = new BigDecimal(randomPrice).setScale(TICKET_PRICE_NUMBER_OF_DECIMALS, RoundingMode.HALF_UP);
             Ticket ticket = new Ticket(ticketPrice);
             eventTickets.add(ticket);
             numberOfTickets--;

@@ -8,39 +8,36 @@ public class Example {
 
     public static void main(String[] args)
     {
-        //Asking for coordinate input and parsing it
-        Scanner in = new Scanner(System.in);
-        System.out.println("Please input co-ordinates:");
-        String line = in.next();
-        String[] ords = line.split(",");
+        Scanner inputScanner = new Scanner(System.in);
+        System.out.println("Insert coordinates in the following format: x,y > ");
+        String line = inputScanner.next();
+        String[] storedCoordinates = line.split(",");
+        int xInputCoordinate, yInputCoordinate;
 
-        //Checking input
-        if(ords.length < 2)
+        if(storedCoordinates.length < 2)
         {
             System.err.println("Error: Incorrect input coordinates");
             return;
         }
 
-        int x, y;
         try
         {
-            x = Integer.parseInt(ords[0]);
-            y = Integer.parseInt(ords[1]);
+            xInputCoordinate = Integer.parseInt(storedCoordinates[0]);
+            yInputCoordinate = Integer.parseInt(storedCoordinates[1]);
         }
         catch(NumberFormatException e)
         {
-            System.err.println("Error: Enter Integer coordinates");
+            System.err.println("Integer input required.");
             return;
         }
 
-        if(x > 10 || y > 10 || x < -10 || y < -10)
+        if(xInputCoordinate > 10 || yInputCoordinate > 10 || xInputCoordinate < -10 || yInputCoordinate < -10)
         {
-            System.err.println("Error: Enter coordinates in the range 10 to -10");
+            System.err.println("Input coordinates range is from -10 to 10.");
             return;
         }
 
-        EventFinder eventFinder = new EventFinder(x,y);
-
+        EventFinder eventFinder = new EventFinder(xInputCoordinate,yInputCoordinate);
         eventFinder.searchEvents();
 
     }
