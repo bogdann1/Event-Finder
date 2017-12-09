@@ -5,8 +5,13 @@ import java.util.ArrayList;
  */
 public class EventFinder {
 
+    public static final int NUMBER_OF_EVENTS_TO_BE_DISPLAYED = 5;
+    public static final int MAP_SIZE = Map.SQUARED_MAP_SIZE;
+    public static final int MAP_UPPER_BOUND = MAP_SIZE;
+    public static final int MAP_LOWER_BOUND = MAP_UPPER_BOUND * (-1);
+
     private Map map = new Map();
-    Location[][] mapOfLocations = map.getMapOfLocations();
+    private Location[][] mapOfLocations = map.getTwoDimensionalMapOfLocations();
     private int xCoordinate;
     private int yCoordinate;
 
@@ -17,11 +22,45 @@ public class EventFinder {
         this.yCoordinate = yCoordinate;
     }
 
-    public void addToStack(Location location) {
+    // Breadth-first search from starting coordinates and expanding around
+    // the starting point.
+
+    public void searchEvents() {
+        ArrayList<Location> visitedLocations = new ArrayList<>();
+        Location searchLocation = mapOfLocations[xCoordinate+MAP_SIZE][yCoordinate+MAP_SIZE];
+        int numberOfEventsFound = 0;
+        stack.add(searchLocation);
+
+        while (BFSConditionHolds(numberOfEventsFound)) {
+            Location stackElement = stack.get(0);
+            stack.remove(0);
+            if (!visitedLocations.contains(stackElement)) {
+                // Mark position as visited.
+                visitedLocations.add(stackElement);
+
+                // Display location event and cheapest price, if available.
+                if (stackElement.hasTicketsAvailable()) {
+                    stackElement.printEventCheapestTicket();
+                    printDistance(stackElement);
+                    numberOfEventsFound++;
+                }
+
+                addNeighboursToStack(stackElement);
+            }
+        }
+    }
+
+
+    public void addLocationToStack(Location location) {
         boolean added = false;
+
+        // If stack is empty, add location to it.
         if (stack.size() == 0) {
             stack.add(location);
         }
+
+        // Else, add the location such that the stack is ordered by
+        // the distance to the input coordinates.
         else
         {
             for (int i = 0; i<stack.size(); i++) {
@@ -33,63 +72,58 @@ public class EventFinder {
                     added = true;
                 }
             }
+
             if (!added) stack.add(location);
         }
     }
 
-    public void searchEvents() {
-        ArrayList<Location> visitedLocations = new ArrayList<>();
-        Location searchLocation = mapOfLocations[xCoordinate+10][yCoordinate+10];
-        int numberOfEventsFound = 0;
-        stack.add(searchLocation);
+    private void addNeighboursToStack(Location stackElement) {
+        int x = stackElement.getxCoordinate();
+        int y = stackElement.getyCoordinate();
 
-        while (stack.size() > 0 && numberOfEventsFound != 5) {
-            Location stackElement = stack.get(0);
-            stack.remove(0);
-            if (!visitedLocations.contains(stackElement)) {
-                visitedLocations.add(stackElement);
-                if (stackElement.hasTicketsAvailable()) {
-                    stackElement.printEventCheapestTicket();
-                    printDistance(stackElement);
-                    numberOfEventsFound++;
-                }
-
-                int x = stackElement.getxCoordinate();
-                int y = stackElement.getyCoordinate();
-
-                if (!(x-1 < -10)) {
-                    addToStack(mapOfLocations[x-1+10][y+10]);
-                }
-
-                if (!(x + 1 > 10)) {
-                    addToStack(mapOfLocations[x+1+10][y+10]);
-                }
-
-                if (!(y - 1 < -10)) {
-                    addToStack(mapOfLocations[x+10][y-1+10]);
-                }
-
-                if (!(y + 1 > 10)) {
-                    addToStack(mapOfLocations[x+10][y+1+10]);
-                }
-
-                if(!(x - 1 < -10) && !(y - 1 < -10)) {
-                    addToStack(mapOfLocations[x-1+10][y-1+10]);
-                }
-
-                if(!(x - 1 < -10) && !(y + 1 > 10)) {
-                    addToStack(mapOfLocations[x-1+10][y+1+10]);
-                }
-
-                if(!(x + 1 > 10) && !(y - 1 < -10)) {
-                    addToStack(mapOfLocations[x+1+10][y-1+10]);
-                }
-
-                if(!(x + 1 > 10) && !(y + 1 > 10)) {
-                    addToStack(mapOfLocations[x+1+10][y+1+10]);
-                }
-            }
+        // LEFT NEIGHBOUR
+        if (!(x-1 < MAP_LOWER_BOUND)) {
+            addLocationToStack(mapOfLocations[x-1+MAP_SIZE][y+MAP_SIZE]);
         }
+
+        // RIGHT NEIGHBOUR
+        if (!(x + 1 > MAP_UPPER_BOUND)) {
+            addLocationToStack(mapOfLocations[x+1+MAP_SIZE][y+MAP_SIZE]);
+        }
+
+        // LOWER NEIGHBOUR
+        if (!(y - 1 < MAP_LOWER_BOUND)) {
+            addLocationToStack(mapOfLocations[x+MAP_SIZE][y-1+MAP_SIZE]);
+        }
+
+        // UPPER NEIGHBOUR
+        if (!(y + 1 > MAP_UPPER_BOUND)) {
+            addLocationToStack(mapOfLocations[x+MAP_SIZE][y+1+MAP_SIZE]);
+        }
+
+        // LOWER LEFT NEIGHBOUR
+        if(!(x - 1 < MAP_LOWER_BOUND) && !(y - 1 < MAP_LOWER_BOUND)) {
+            addLocationToStack(mapOfLocations[x-1+MAP_SIZE][y-1+MAP_SIZE]);
+        }
+
+        // UPPER LEFT NEIGHBOUR
+        if(!(x - 1 < MAP_LOWER_BOUND) && !(y + 1 > MAP_UPPER_BOUND)) {
+            addLocationToStack(mapOfLocations[x-1+MAP_SIZE][y+1+MAP_SIZE]);
+        }
+
+        // LOWER RIGHT NEIGHBOUR
+        if(!(x + 1 > MAP_UPPER_BOUND) && !(y - 1 < MAP_LOWER_BOUND)) {
+            addLocationToStack(mapOfLocations[x+1+MAP_SIZE][y-1+MAP_SIZE]);
+        }
+
+        // UPPER RIGHT NEIGHBOUR
+        if(!(x + 1 > MAP_UPPER_BOUND) && !(y + 1 > MAP_UPPER_BOUND)) {
+            addLocationToStack(mapOfLocations[x+1+MAP_SIZE][y+1+MAP_SIZE]);
+        }
+    }
+
+    private boolean BFSConditionHolds(int numberOfEventsFound) {
+        return stack.size() > 0 && numberOfEventsFound != NUMBER_OF_EVENTS_TO_BE_DISPLAYED;
     }
 
     private void printDistance(Location stackElement) {
@@ -98,8 +132,8 @@ public class EventFinder {
     }
 
     public void printMap() {
-        for (int i = 0; i<=20 ; i++) {
-            for (int j = 0; j <= 20 ; j++) {
+        for (int i = 0; i<=MAP_SIZE*2 ; i++) {
+            for (int j = 0; j <= MAP_SIZE*2 ; j++) {
                 mapOfLocations[i][j].printLocationDetails();
             }
         }

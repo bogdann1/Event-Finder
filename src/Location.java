@@ -44,7 +44,7 @@ public class Location {
 
     public void printEventCheapestTicket() {
         if (hasTicketsAvailable()) {
-            event.displayEventDetails();
+            event.displayEventDetailsAndCheapestTicketAvailable();
         }
         else {
             System.out.println("No event tickets at this location.");

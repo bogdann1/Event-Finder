@@ -44,21 +44,27 @@ public class Event {
         return ticket.getPrice().compareTo(cheapestTicketPrice) == -1;
     }
 
-    public void displayEventDetails() {
-        System.out.print("Event " + eventName + " - $" + getCheapestTicketPrice());
+    public void displayEventDetailsAndCheapestTicketAvailable() {
+        try {
+            System.out.print("Event " + eventName + " - $" + getCheapestTicketPrice());
+        } catch (Exception e) {
+            System.out.println("Event " + eventName + " - No tickets available");
+        }
     }
 
     public void displayEventDetailsWithAllTickets() {
-        if (eventHasTickets()) {
-            System.out.print("Event " + eventName + " - ");
-            for (Ticket ticket : tickets) {
-                ticket.displayPrice();
-            }
-            System.out.println();
-        }
+        if (eventHasTickets()) displayEventTickets();
         else
         {
             System.out.println("Event " + eventName + " - No tickets available");
         }
+    }
+
+    private void displayEventTickets() {
+        System.out.print("Event " + eventName + " - ");
+        for (Ticket ticket : tickets) {
+            ticket.displayPrice();
+        }
+        System.out.println();
     }
 }

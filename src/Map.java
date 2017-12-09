@@ -7,15 +7,21 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by bogdannitescu on 09/12/2017.
  */
 public class Map {
-    static final int X_COORDINATE_LOWER_BOUND = -10;
-    static final int X_COORDINATE_UPPER_BOUND = 10;
-    static final int Y_COORDINATE_LOWER_BOUND = -10;
-    static final int Y_COORDINATE_UPPER_BOUND = 10;
-    public static final int MINIMUM_NUMBER_OF_TICKETS = 1;
+    static final int SQUARED_MAP_SIZE = 10;
+    static final int X_COORDINATE_UPPER_BOUND = SQUARED_MAP_SIZE;
+    static final int Y_COORDINATE_UPPER_BOUND = X_COORDINATE_UPPER_BOUND;
+    static final int X_COORDINATE_LOWER_BOUND = X_COORDINATE_UPPER_BOUND * (-1);
+    static final int Y_COORDINATE_LOWER_BOUND = Y_COORDINATE_UPPER_BOUND * (-1);
+    public static final int MINIMUM_NUMBER_OF_TICKETS_IF_AVAILABLE = 1;
     public static final int MAXIMUM_NUMBER_OF_TICKETS_FOR_EVENT = 4;
+    public static final double MINIMUM_TICKET_PRICE = 0.05;
+    public static final int MAXIMUM_TICKET_PRICE = 100;
+    public static final int NUMBER_OF_X_AXIS_POINTS = Math.abs(X_COORDINATE_LOWER_BOUND) + Math.abs(X_COORDINATE_UPPER_BOUND) + 1;
+    public static final int NUMBER_OF_Y_AXIS_POINTS = Math.abs(Y_COORDINATE_LOWER_BOUND) + Math.abs(Y_COORDINATE_UPPER_BOUND) + 1;
+    public static final int TICKET_PRICE_NUMBER_OF_DECIMALS = 2;
     private int eventNumber = 0;
     private ArrayList<Location> listOfLocations = new ArrayList<>();
-    private Location[][] mapOfLocations = new Location[21][21];
+    private Location[][] twoDimensionalMapOfLocations = new Location[NUMBER_OF_X_AXIS_POINTS][NUMBER_OF_Y_AXIS_POINTS];
 
     public Map()
     {
@@ -38,7 +44,7 @@ public class Map {
         }
 
         listOfLocations.add(location);
-        mapOfLocations[x+10][y+10] = location;
+        twoDimensionalMapOfLocations[x+X_COORDINATE_UPPER_BOUND][y+Y_COORDINATE_UPPER_BOUND] = location;
     }
 
     private Location generateLocationWithoutEvent(int x, int y) {
@@ -61,8 +67,8 @@ public class Map {
     private void generateTicketsForEvent(Random r, ArrayList<Ticket> eventTickets) {
         int numberOfTickets = generateRandomNumberOfTickets();
         while (numberOfTickets >= 1) {
-            float randomPrice = (float) (0.05 + r.nextFloat()*(100-0.05));
-            BigDecimal ticketPrice = new BigDecimal(randomPrice).setScale(2,BigDecimal.ROUND_HALF_UP);
+            float randomPrice = (float) (MINIMUM_TICKET_PRICE + r.nextFloat()*(MAXIMUM_TICKET_PRICE - MINIMUM_TICKET_PRICE));
+            BigDecimal ticketPrice = new BigDecimal(randomPrice).setScale(TICKET_PRICE_NUMBER_OF_DECIMALS,BigDecimal.ROUND_HALF_UP);
             Ticket ticket = new Ticket(ticketPrice);
             eventTickets.add(ticket);
             numberOfTickets--;
@@ -70,7 +76,7 @@ public class Map {
     }
 
     private int generateRandomNumberOfTickets() {
-        return ThreadLocalRandom.current().nextInt(MINIMUM_NUMBER_OF_TICKETS, MAXIMUM_NUMBER_OF_TICKETS_FOR_EVENT+1);
+        return ThreadLocalRandom.current().nextInt(MINIMUM_NUMBER_OF_TICKETS_IF_AVAILABLE, MAXIMUM_NUMBER_OF_TICKETS_FOR_EVENT+1);
     }
 
     private boolean eventShouldHaveTickets(Random r) {
@@ -107,7 +113,7 @@ public class Map {
         return listOfLocations;
     }
 
-    public Location[][] getMapOfLocations() {
-        return mapOfLocations;
+    public Location[][] getTwoDimensionalMapOfLocations() {
+        return twoDimensionalMapOfLocations;
     }
 }
