@@ -15,7 +15,7 @@ public class Map {
     static final int Y_COORDINATE_LOWER_BOUND = Y_COORDINATE_UPPER_BOUND * (-1);
     public static final int MINIMUM_NUMBER_OF_TICKETS_IF_AVAILABLE = 1;
     public static final int MAXIMUM_NUMBER_OF_TICKETS_FOR_EVENT = 50;
-    public static final double MINIMUM_TICKET_PRICE = 10;
+    public static final double MINIMUM_TICKET_PRICE = 1;
     public static final int MAXIMUM_TICKET_PRICE = 100;
     public static final int NUMBER_OF_X_AXIS_POINTS = Math.abs(X_COORDINATE_LOWER_BOUND) + Math.abs(X_COORDINATE_UPPER_BOUND) + 1;
     public static final int NUMBER_OF_Y_AXIS_POINTS = Math.abs(Y_COORDINATE_LOWER_BOUND) + Math.abs(Y_COORDINATE_UPPER_BOUND) + 1;
