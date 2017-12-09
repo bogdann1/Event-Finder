@@ -14,7 +14,8 @@ public class Map {
     public static final int MINIMUM_NUMBER_OF_TICKETS = 1;
     public static final int MAXIMUM_NUMBER_OF_TICKETS_FOR_EVENT = 4;
     private int eventNumber = 0;
-    private ArrayList<Location> locations = new ArrayList<>();
+    private ArrayList<Location> listOfLocations = new ArrayList<>();
+    private Location[][] mapOfLocations = new Location[21][21];
 
     public Map()
     {
@@ -36,8 +37,8 @@ public class Map {
             location = generateLocationWithoutEvent(x, y);
         }
 
-        locations.add(location);
-
+        listOfLocations.add(location);
+        mapOfLocations[x+10][y+10] = location;
     }
 
     private Location generateLocationWithoutEvent(int x, int y) {
@@ -81,19 +82,19 @@ public class Map {
     }
 
     public void printEntireMap() {
-        for (Location location : locations) {
+        for (Location location : listOfLocations) {
             location.printLocationDetails();
         }
     }
 
     public void printLocationsWithEvents() {
-        for (Location location : locations) {
+        for (Location location : listOfLocations) {
             if (location.hasEvent()) location.printLocationDetails();
         }
     }
 
     public void printLocationsWithAvailableTickets() {
-        for (Location location : locations) {
+        for (Location location : listOfLocations) {
             if (location.hasEvent()) {
                 if (location.hasTicketsAvailable()) {
                     location.printLocationDetails();
@@ -102,7 +103,11 @@ public class Map {
         }
     }
 
-    public ArrayList<Location> getLocations() {
-        return locations;
+    public ArrayList<Location> getListOfLocations() {
+        return listOfLocations;
+    }
+
+    public Location[][] getMapOfLocations() {
+        return mapOfLocations;
     }
 }

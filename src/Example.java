@@ -29,6 +29,8 @@ public class Example {
         //System.out.println(bigDecimal);
 
         EventFinder eventFinder = new EventFinder(2,1);
+        eventFinder.printMap();
+
     }
 
 }
