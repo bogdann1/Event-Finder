@@ -19,16 +19,20 @@ public class Location {
         this.event = event;
     }
 
-    public boolean locationHasEvent() {
+    public boolean hasEvent() {
         return this.event != null;
     }
 
-    public boolean locationHasTicketsAvailable() {
-        return locationHasEvent() && event.eventHasTickets();
+    public boolean hasTicketsAvailable() {
+        return hasEvent() && event.eventHasTickets();
+    }
+
+    public int distanceToCoordinates(int x, int y) {
+        return Math.abs(x-xCoordinate) + Math.abs(y-yCoordinate);
     }
 
     public void printLocationDetails() {
-        if (locationHasEvent()) {
+        if (hasEvent()) {
             System.out.print("("+xCoordinate+","+yCoordinate+") - ");
             event.displayEventDetailsWithAllTickets();
         }

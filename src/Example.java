@@ -28,8 +28,7 @@ public class Example {
         BigDecimal bigDecimal = new BigDecimal(randomPrice).setScale(2,BigDecimal.ROUND_HALF_UP);
         //System.out.println(bigDecimal);
 
-        Map map = new Map();
-        map.printLocationsWithAvailableTickets();
+        EventFinder eventFinder = new EventFinder(2,1);
     }
 
 }
