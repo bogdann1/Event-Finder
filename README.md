@@ -29,7 +29,7 @@ These are some assumptions I made regarding the system. Some of them were made i
 * the map should be a `2-D Array` for the proposed scenario
 * `50%` chances for a map location to have an event
 * `50%` for an event to be populated with tickets
-* the map is squared
+* the map is square matrix shaped
 * the map has its centre at `(0,0)` co-ordinates
 * the minimum ticket price is `1` 
 * the maximum ticket price is `100`
