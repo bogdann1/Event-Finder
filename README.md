@@ -37,6 +37,13 @@ These are some assumptions I made regarding the system. Some of them were made i
 * the maximum number of available tickets for an event is `50`
 * the minimum ticket price is `10`
 * the maximum ticket price is `100`
+### Scenario
+Respecting the specifications from the Scenario list.
+1. Each co-ordinate currently holds only one event. Each co-ordinate is represented as a Location object, and a Location has an Event Class attribute. Thus, it either contains only one event, or none.
+2. Each event has a unique numeric identifier. When seeding the map, a counter increases every time a new Event object is created.
+3. Each event has zero or more tickets. The event class holds a List of tickets than can be empty or populated.
+4. Each ticket has a non-zero price. If a ticket's price is accidentaly set to 0 (however, it is impossible now, as the ticket price range is set between 1 and 100), an exception is thrown.
+5. Distance is calculated as Manhattan Distance. It is handled by the `distanceToCoordinates(int x, int y)` method found in the Location Class. 
 ### Questions to consider
 1. How might you change your program if you needed to support multiple events at the
 same location?
